@@ -80,24 +80,14 @@ read.nlogo<-function(file=Jacob.data){
   head(turt)
   
   ##Divide into districts
-  distr<-which(turt[,"breed"]=="districts")
-  turt[distr]
-  districts<-turt[distr,]
-  empty<-which(districts[,1:39]=="")
-  districts[empty]<-NA
-  districts<-as.data.frame(districts)
-  allna<-function(x){all(is.na(x))=="TRUE"}
-  empties<-apply(districts, 2, allna)
-  empties<-which(empties==TRUE)
-  districts<-districts[,-empties]
-  alltrue<-function(x){all(x=="TRUE")==TRUE}
-  trues<-apply(districts,2, alltrue)
-  trues<-which(trues==TRUE)
-  districts<-districts[,-trues]
-  uniq<-function(x){length(unique(x))==1}
-  uniques<-apply(districts, 2, uniq)
-  uniques<-which(uniques==TRUE)
-  districts<-districts[,-uniques]
+  distr<-which(turt[,"breed"]=="districts") ##finding districts
+  districts<-turt[distr,] ##subsetting districts
+  districts<-as.data.frame(districts) ##making data.frame
+  uniq<-function(x){length(unique(x))==1} ##If unique is 1 all the elements are equal
+  uniques<-apply(districts, 2, uniq)##Findings rows with all equal
+  uniques<-which(uniques==TRUE) ##finding which specific columns
+  districts<-districts[,-uniques] ##trimming down data. 
+  ##NEED TO SAVE AS CSV!
 }
 read.nlogo()
 
