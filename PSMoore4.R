@@ -63,6 +63,7 @@ read.nlogo<-function(file=Jacob.data){
   ##set column names. Must do before string splitting. 
   colnames(turt)<-turtles.names
   turt<-turt[,-7] ##Delete label as it is empty
+  
   which(turt[,"breed"]=="districts") ##Figure out which ones are districts
   turt[209:4786,"district-prefs"]<-"NA NA NA" ##For non-districts, fill in NA
   ##When split, it will give NA for all three columns
@@ -77,6 +78,26 @@ read.nlogo<-function(file=Jacob.data){
   ##Cbind turt with the split district preferences
   turt<-cbind(turt, distmat)
   head(turt)
+  
+  ##Divide into districts
+  distr<-which(turt[,"breed"]=="districts")
+  turt[distr]
+  districts<-turt[distr,]
+  empty<-which(districts[,1:39]=="")
+  districts[empty]<-NA
+  districts<-as.data.frame(districts)
+  allna<-function(x){all(is.na(x))=="TRUE"}
+  empties<-apply(districts, 2, allna)
+  empties<-which(empties==TRUE)
+  districts<-districts[,-empties]
+  alltrue<-function(x){all(x=="TRUE")==TRUE}
+  trues<-apply(districts,2, alltrue)
+  trues<-which(trues==TRUE)
+  districts<-districts[,-trues]
+  uniq<-function(x){length(unique(x))==1}
+  uniques<-apply(districts, 2, uniq)
+  uniques<-which(uniques==TRUE)
+  districts<-districts[,-uniques]
 }
 read.nlogo()
 
