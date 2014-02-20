@@ -93,7 +93,6 @@ read.nlogo<-function(file=Jacob.data){
   uniques<-which(uniques==TRUE) ##finding which specific columns
   districts<-districts[,-uniques] ##trimming down data. 
   head(districts)
-  ##NEED TO SAVE AS CSV!
   
   ##Parties
   party<-which(turt[,"breed"]=="parties") ##finding parties
@@ -198,6 +197,12 @@ read.nlogo<-function(file=Jacob.data){
                            paste("pos-obs-last", 1:3,sep=""))
  cands<-as.data.frame(cands)
  ##Write CSV
+ 
+ write.csv(districts, file=paste(dir_name, "/Turtles/Districts.csv", sep=""))
+ write.csv(voters, file=paste(dir_name, "/Turtles/Voters.csv", sep=""))
+ write.csv(parties, file=paste(dir_name, "/Turtles/Parties.csv", sep=""))
+ write.csv(activs, file=paste(dir_name, "/Turtles/Activists.csv", sep=""))
+ write.csv(cands, file=paste(dir_name, "/Turtles/Candidates.csv", sep=""))
 }
 read.nlogo()
 
