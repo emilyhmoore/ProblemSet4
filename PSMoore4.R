@@ -23,14 +23,26 @@ read.nlogo<-function(file=Jacob.data){
   ##Creats Plots subfolder
   dir.create(paste(dir_name, "/", "Plots", sep=""))
   ##Next four create the subsubdirectories for the plots,
-  dir.create(paste(dir_name, "/", "Plots", "/", "PositionPlot", sep=""))
-  dir.create(paste(dir_name, "/", "Plots", "/", "WinnersPlot", sep=""))
-  dir.create(paste(dir_name, "/", "Plots", "/", "PolarizationPlot", sep=""))
-  dir.create(paste(dir_name, "/", "Plots", "/", "IncumbentPercentagePlot", sep=""))
+  dir.create(paste(dir_name, "/Plots/PositionPlot", sep=""))
+  dir.create(paste(dir_name, "/Plots/WinnersPlot", sep=""))
+  dir.create(paste(dir_name, "/Plots/PolarizationPlot", sep=""))
+  dir.create(paste(dir_name, "/Plots/IncumbentPercentagePlot", sep=""))
   
   ###Globals
+  ##Read in names
   globals.names <- scan(file=file, what=" ",sep=",",skip=8,nlines=1)
+  ##Read in values
   globals<-scan(file=file, what=" ",sep=",",skip=9,nlines=1)
+  ##Remove odd characters
+  globals<- gsub("\\[|\\]","",globals)
+  ##Remove extra quote
+  globals<- gsub("\"","",globals)
+  ##put names on the globals BEFORE splitting else names will get screwed up
+  names(globals)<-globals.names
+  ##Now when you split the names will be right. 
+  globals<- unlist(strsplit(globals, split=" "))
+  
+  dump("globals", file=paste(dir_name, "/Globals/Globals.R", sep=""))
   
   ##Turtles
   turtles.names<-scan(file=file, what=" ",sep=",",skip=12,nlines=1)
@@ -68,16 +80,3 @@ mult(9) ##Try it out
 
 ##Chapter 7 JMR Probs 3 and 4
 
-
-##Previous stuff from class to incorporate later. 
-
-
-globals.values <- scan(file=Jacob.data,what=c(0,""),quote="",sep=" ",skip=9,nlines=1)
-globals.values <- gsub("\\[|\\]","",globals.values)
-globals.values <- gsub("","",globals.values)
-head(globals.values)
-globals.list <- as.list(globals.values)
-head(globals.list)
-list(globals.names,globals.values,name)
-globals.values <- strsplit(globals.values,",")
-globals.values <- unlist(globals.values)
