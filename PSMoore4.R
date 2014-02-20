@@ -204,7 +204,6 @@ read.nlogo<-function(file=Jacob.data){
  write.csv(cands, file=paste(dir_name, "/Turtles/Candidates.csv", sep=""))
  
  ##Plots
- plotcol<-scan(file=file, skip=8545, nlines=1, what=" ", sep=",", n=4)
  d1<-scan(file=file, skip=8546, nlines=169, what=" ", sep=",")
  d1<-matrix(d1, nrow=169, byrow=TRUE) 
  d1<-d1[,-c(25:84)]
@@ -274,8 +273,7 @@ read.nlogo<-function(file=Jacob.data){
  write.csv(d3, file=paste(dir_name, "/Plots/PositionPlot/D3.csv", sep=""))
  
  ##Plots
- #pdf(file=file.path(dir_name,"Plots","PositionPlot","Positions.pdf"),width=8.5,height=11)
- dev.off()
+ pdf(file=file.path(dir_name,"Plots","PositionPlot","Positions.pdf"),width=8.5,height=11)
  plot(x=reds[,1], y=reds[,2], col="red", 
       pch="*", ylab="Simulation Period", xlab="Cand Positions", 
       main="Dim1", ylim=c(-6,6))
@@ -285,6 +283,7 @@ read.nlogo<-function(file=Jacob.data){
  points(x=blue.activs[,1], y=blue.activs[,2], col="slategray", pch="*")
  points(x=blue.voters[,1], y=blue.voters[,2], col="blue4", pch="*")
 
+ ##Plot for second dim
  plot(x=reds2[,1], y=reds2[,2], col="red", 
       pch="*", ylab="Simulation Period", xlab="Cand Positions", 
       main="Dim2", ylim=c(-15,15))
@@ -294,6 +293,7 @@ read.nlogo<-function(file=Jacob.data){
  points(x=blue.activs2[,1], y=blue.activs2[,2], col="slategray", pch="*")
  points(x=blue.voters2[,1], y=blue.voters2[,2], col="blue4", pch="*")
  
+ ##plot for 3rd dim
  plot(x=reds3[,1], y=reds3[,2], col="red", 
       pch="*", ylab="Simulation Period", xlab="Cand Positions", 
       main="Dim3", ylim=c(-4,3))
@@ -302,6 +302,45 @@ read.nlogo<-function(file=Jacob.data){
  points(x=red.voters3[,1], y=red.voters3[,2], col="rosybrown1", pch="*")
  points(x=blue.activs3[,1], y=blue.activs3[,2], col="slategray", pch="*")
  points(x=blue.voters3[,1], y=blue.voters3[,2], col="blue4", pch="*")
+ dev.off()
+ 
+ ##Winners data
+ wincol <- scan(file=file, skip=9139, nlines=1, what=" ", sep=",", n=4)
+ win<-scan(file=file, skip=9140, nlines=169, what=" ", sep=",")
+ win<-matrix(win, nrow=169, byrow=TRUE)
+ win<- win[,-c(13:84)]
+ blue.p<- win[,c(1:4)]
+ red.p <- win[,c(9:12)]
+ allofthem <- rbind(blue.p, red.p)
+ allofthem <- data.frame(allofthem)
+ colnames(allofthem) <- wincol
+ allofthem$type <- c(rep("blue.p", 169), rep("red.p", 169))
+ # Write the csv. file
+ write.csv(allofthem, paste(dir_name,"/Plots/WinnersPlot/Winners.csv", sep=""))
+
+ ##Polarization data
+ polcol<- scan(file=file, skip=9320, nlines=1, what=" ", sep=",", n=4)
+ pol<-scan(file=file, skip=9321, nlines=169, what=" ", sep=",")
+ pol<-matrix(pol, nrow=169, byrow=TRUE)
+ pol<-pol[,-c(13:84)]
+ cand_pol<- pol[,c(1:4)]
+ voter_pol<- pol[,c(5:8)]
+ activ_pol<- pol[,c(9:12)]
+ whole<- rbind(cand_pol, voter_pol, activ_pol)
+ whole<- data.frame(whole)
+ colnames(whole) <- polcol
+ whole$type <- c(rep("candidate", 169), rep("voter", 169), rep("activist", 169))
+ write.csv(whole, paste(dir_name,"/Plots/PolarizationPlot/Polarization.csv", sep=""))
+ 
+ ##Incumbent
+ incol <- scan(file=file, skip=9499, nlines=1, what=" ", sep=",", n=4)
+ incum<- scan(file=file, skip=9500, nlines=169, what=" ", sep=",")
+ incum<- matrix(incum, nrow=169, byrow=TRUE)
+ incum<- incum[,c(1:4)]
+ colnames(incum) <- incol
+ incum <- data.frame(incum)
+ write.csv(whole, paste(dir_name,"/Plots/IncumbentPercentagePlot/Incumbency.csv", sep=""))
+
 }
 read.nlogo()
 
