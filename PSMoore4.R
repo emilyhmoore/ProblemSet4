@@ -79,9 +79,16 @@ read.nlogo<-function(file=Jacob.data){
   turt<-cbind(turt, distmat)
   head(turt)
   
+  
   ##Divide into districts
   distr<-which(turt[,"breed"]=="districts") ##finding districts
   districts<-turt[distr,] ##subsetting districts
+  cand<-districts[,"my-cands-district"]
+  cand<-unlist(strsplit(cand, " "))
+  cand.mat<-matrix(cand,ncol=2, byrow=TRUE)
+  colnames(cand.mat)<-c("my-cands-district-1","my-cands-district-2")  
+  districts<-districts[,-35]
+  districts<-cbind(districts, cand.mat)
   districts<-as.data.frame(districts) ##making data.frame
   uniq<-function(x){length(unique(x))==1} ##If unique is 1 all the elements are equal
   uniques<-apply(districts, 2, uniq)##Findings rows with all equal
