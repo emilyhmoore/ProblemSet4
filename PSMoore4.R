@@ -45,8 +45,38 @@ read.nlogo<-function(file=Jacob.data){
   dump("globals", file=paste(dir_name, "/Globals/Globals.R", sep=""))
   
   ##Turtles
-  turtles.names<-scan(file=file, what=" ",sep=",",skip=12,nlines=1)
-  turtles<-scan(file=file, what=" ", sep=",", skip=13, n=4786)
+  ##Names
+  turtles.names<-scan(file=file, what=" ",sep=",",skip=12,nlines=1, n=38)
+  ##Scan turtles
+  turtles<-scan(file=file, what=" ", sep=",", skip=13, nlines=4786)
+  ##make into a matrix
+  turt<-matrix(turtles, nrow=4786, byrow=TRUE)
+  ##Delete completely empty columns
+  turt<-turt[,-c(39:84)]
+  ##Get rid of brackets
+  turt<- gsub("\\[|\\]","",turt)
+  ##Remove extra quote
+  turt<- gsub("\"","",turt)
+  ##Remove curly brackets
+  turt<-gsub("\\{|\\}", "", turt)
+  turt<-gsub("turtles |breed ", "", turt)
+  ##set column names. Must do before string splitting. 
+  colnames(turt)<-turtles.names
+  turt<-turt[,-7] ##Delete label as it is empty
+  which(turt[,"breed"]=="districts") ##Figure out which ones are districts
+  turt[209:4786,"district-prefs"]<-"NA NA NA" ##For non-districts, fill in NA
+  ##When split, it will give NA for all three columns
+  ##splits district preferences
+  dist<-unlist(strsplit(turt[,"district-prefs"], " "))
+  ##matrix of prefs
+  distmat<-matrix(dist, ncol=3, byrow=TRUE)
+  ##new column names
+  colnames(distmat)<-c("district-prefs-1", "district-prefs-2", "district-prefs-3")
+  ##remove old district prefs
+  turt<-turt[,-35]
+  ##Cbind turt with the split district preferences
+  turt<-cbind(turt, distmat)
+  head(turt)
 }
 read.nlogo()
 
