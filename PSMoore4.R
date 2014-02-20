@@ -125,8 +125,8 @@ read.nlogo<-function(file=Jacob.data){
   parties<-parties[,-c(7,9,10)]
   head(parties)
   parties<-as.data.frame(parties) ##making data.frame
-  ##MAKE CSV!!!
   
+  ##Function to split from now on
   splitter<-function(x){
     unlist(strsplit(x, " "))
   }
@@ -152,7 +152,6 @@ read.nlogo<-function(file=Jacob.data){
                             paste("prefs", 1:3,sep=""))
   head(voters)
   voters<-as.data.frame(voters)
- ##MAKE CSV!
  
  ##Activisits
  activ<-which(turt[,"breed"]=="activists") 
@@ -196,13 +195,85 @@ read.nlogo<-function(file=Jacob.data){
  colnames(cands)[11:16]<-c(paste("pos-obs", 1:3, sep=""), 
                            paste("pos-obs-last", 1:3,sep=""))
  cands<-as.data.frame(cands)
- ##Write CSV
  
+ ##Write the CSV files 
  write.csv(districts, file=paste(dir_name, "/Turtles/Districts.csv", sep=""))
  write.csv(voters, file=paste(dir_name, "/Turtles/Voters.csv", sep=""))
  write.csv(parties, file=paste(dir_name, "/Turtles/Parties.csv", sep=""))
  write.csv(activs, file=paste(dir_name, "/Turtles/Activists.csv", sep=""))
  write.csv(cands, file=paste(dir_name, "/Turtles/Candidates.csv", sep=""))
+ 
+ ##Plots
+ plotcol<-scan(file=file, skip=8545, nlines=1, what=" ", sep=",", n=4)
+ d1<-scan(file=file, skip=8546, nlines=169, what=" ", sep=",")
+ d1<-matrix(d1, nrow=169, byrow=TRUE) 
+ d1<-d1[,-c(25:84)]
+ head(d1)
+ reds<-d1[,1:4]
+ blues<-d1[,5:8]
+ red.activs<-d1[,9:12]
+ red.voters<-d1[,13:16]
+ blue.voters<-d1[,17:20]
+ blue.activs<-d1[,21:24]
+ D1<-rbind(reds,red.activs, red.voters, blues, blue.activs, blue.voters)
+ colnames(D1)<-c("x", "y", "color", "pendown")
+ rownames(D1)<-c(rep("reds", 169), 
+                 rep("red.activs", 169), 
+                 rep("red.voters", 169), 
+                 rep("blues", 169),
+                 rep("blue.activs", 169),
+                 rep("blue.voters", 169))
+ 
+ D1<-as.data.frame(D1)
+ write.csv(D1, file=paste(dir_name, "/Plots/PositionPlot/D1.csv", sep=""))
+
+ ##D2
+ d2<-scan(file=file, skip=8730, nlines=169, what=" ", sep=",")
+ d2<-matrix(d2, nrow=169, byrow=TRUE) 
+ d2<-d2[,-c(25:84)]
+ head(d2)
+ reds<-d2[,1:4]
+ blues<-d2[,5:8]
+ red.activs<-d2[,9:12]
+ red.voters<-d2[,13:16]
+ blue.voters<-d2[,17:20]
+ blue.activs<-d2[,21:24]
+ d2<-rbind(reds,red.activs, red.voters, blues, blue.activs, blue.voters)
+ colnames(d2)<-c("x", "y", "color", "pendown")
+ rownames(d2)<-c(rep("reds", 169), 
+                 rep("red.activs", 169), 
+                 rep("red.voters", 169), 
+                 rep("blues", 169),
+                 rep("blue.activs", 169),
+                 rep("blue.voters", 169))
+ 
+ d2<-as.data.frame(d2)
+ write.csv(d2, file=paste(dir_name, "/Plots/PositionPlot/D2.csv", sep=""))
+ 
+ ##D3
+ d3<-scan(file=file, skip=8914, nlines=169, what=" ", sep=",")
+ d3<-matrix(d3, nrow=169, byrow=TRUE) 
+ d3<-d3[,-c(25:84)]
+ head(d3)
+ reds<-d3[,1:4]
+ blues<-d3[,5:8]
+ red.activs<-d3[,9:12]
+ red.voters<-d3[,13:16]
+ blue.voters<-d3[,17:20]
+ blue.activs<-d3[,21:24]
+ d3<-rbind(reds,red.activs, red.voters, blues, blue.activs, blue.voters)
+ colnames(d3)<-c("x", "y", "color", "pendown")
+ rownames(d3)<-c(rep("reds", 169), 
+                 rep("red.activs", 169), 
+                 rep("red.voters", 169), 
+                 rep("blues", 169),
+                 rep("blue.activs", 169),
+                 rep("blue.voters", 169))
+ 
+ d3<-as.data.frame(d3)
+ write.csv(d3, file=paste(dir_name, "/Plots/PositionPlot/D3.csv", sep=""))
+ 
+ 
 }
 read.nlogo()
 
