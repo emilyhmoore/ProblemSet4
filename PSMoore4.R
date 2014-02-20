@@ -1,5 +1,5 @@
 
-setwd("C:/Users/emily m/Journal Articles/Applied Statistical Programming")
+setwd("C:/Users/emily m/Documents/GitHub/ProblemSet4")
 Jacob.data <- "NetLogo.csv"
 
 read.nlogo<-function(file=Jacob.data){
@@ -332,6 +332,17 @@ read.nlogo<-function(file=Jacob.data){
  whole$type <- c(rep("candidate", 169), rep("voter", 169), rep("activist", 169))
  write.csv(whole, paste(dir_name,"/Plots/PolarizationPlot/Polarization.csv", sep=""))
  
+ ##Ran out of time for something fancy. 
+ pdf(file=file.path(dir_name,"Plots","PolarizationPlot","Polarization.pdf"),width=11,height=8.5)
+ x<-as.numeric(whole$x)
+y<-as.numeric(whole$y)
+head(whole)
+plot(x=x[1:169], y=y[1:169], col="blue", pch=20, 
+     ylim=c(0,600), xlab="x", ylab="y", main="Relationship Between People in System")
+points(x=x[170:(170+169)], y=y[170:(170+169)], pch=20, col="red")
+points(x=x[340:507], y=y[340:507], pch=20, col="purple")
+dev.off()
+
  ##Incumbent
  incol <- scan(file=file, skip=9499, nlines=1, what=" ", sep=",", n=4)
  incum<- scan(file=file, skip=9500, nlines=169, what=" ", sep=",")
@@ -340,9 +351,17 @@ read.nlogo<-function(file=Jacob.data){
  colnames(incum) <- incol
  incum <- data.frame(incum)
  write.csv(whole, paste(dir_name,"/Plots/IncumbentPercentagePlot/Incumbency.csv", sep=""))
+  
+ pdf(file=file.path(dir_name,"Plots","IncumbentPercentagePlot","IncumbentsWin.pdf"),width=11,height=8.5)
+ ##Boring, I know, but I ran out of time to do more. 
+ hist(as.numeric(incum$y), col="slategray", 
+      main="Frequency of Incumbents Winning Over all Periods", 
+      xlab="Percentage of Incumbents Winning")
+dev.off()
 
-}
-read.nlogo()
+} ##Close function
+
+read.nlogo() ##Run function
 
 ##Chapter 4 JMR Probs 3 and 4
 ###Prob 3:
