@@ -216,15 +216,15 @@ read.nlogo<-function(file=Jacob.data){
  blue.voters<-d1[,17:20]
  blue.activs<-d1[,21:24]
  D1<-rbind(reds,red.activs, red.voters, blues, blue.activs, blue.voters)
- colnames(D1)<-c("x", "y", "color", "pendown")
- rownames(D1)<-c(rep("reds", 169), 
+ D1<-as.data.frame(D1)
+ D1$type<-c(rep("reds", 169), 
                  rep("red.activs", 169), 
                  rep("red.voters", 169), 
                  rep("blues", 169),
                  rep("blue.activs", 169),
                  rep("blue.voters", 169))
- 
- D1<-as.data.frame(D1)
+ colnames(D1)<-c("x", "y", "color", "pendown", "type")
+ head(D1)
  write.csv(D1, file=paste(dir_name, "/Plots/PositionPlot/D1.csv", sep=""))
 
  ##D2
@@ -232,22 +232,22 @@ read.nlogo<-function(file=Jacob.data){
  d2<-matrix(d2, nrow=169, byrow=TRUE) 
  d2<-d2[,-c(25:84)]
  head(d2)
- reds<-d2[,1:4]
- blues<-d2[,5:8]
- red.activs<-d2[,9:12]
- red.voters<-d2[,13:16]
- blue.voters<-d2[,17:20]
- blue.activs<-d2[,21:24]
- d2<-rbind(reds,red.activs, red.voters, blues, blue.activs, blue.voters)
- colnames(d2)<-c("x", "y", "color", "pendown")
- rownames(d2)<-c(rep("reds", 169), 
-                 rep("red.activs", 169), 
-                 rep("red.voters", 169), 
-                 rep("blues", 169),
-                 rep("blue.activs", 169),
-                 rep("blue.voters", 169))
- 
+ reds2<-d2[,1:4]
+ blues2<-d2[,5:8]
+ red.activs2<-d2[,9:12]
+ red.voters2<-d2[,13:16]
+ blue.voters2<-d2[,17:20]
+ blue.activs2<-d2[,21:24]
+ d2<-rbind(reds2,red.activs2, red.voters2, blues2, blue.activs2, blue.voters2)
  d2<-as.data.frame(d2)
+ d2$type<-c(rep("reds", 169), 
+            rep("red.activs", 169), 
+            rep("red.voters", 169), 
+            rep("blues", 169),
+            rep("blue.activs", 169),
+            rep("blue.voters", 169))
+ colnames(d2)<-c("x", "y", "color", "pendown", "type")
+ head(d2)
  write.csv(d2, file=paste(dir_name, "/Plots/PositionPlot/D2.csv", sep=""))
  
  ##D3
@@ -255,25 +255,53 @@ read.nlogo<-function(file=Jacob.data){
  d3<-matrix(d3, nrow=169, byrow=TRUE) 
  d3<-d3[,-c(25:84)]
  head(d3)
- reds<-d3[,1:4]
- blues<-d3[,5:8]
- red.activs<-d3[,9:12]
- red.voters<-d3[,13:16]
- blue.voters<-d3[,17:20]
- blue.activs<-d3[,21:24]
- d3<-rbind(reds,red.activs, red.voters, blues, blue.activs, blue.voters)
- colnames(d3)<-c("x", "y", "color", "pendown")
- rownames(d3)<-c(rep("reds", 169), 
-                 rep("red.activs", 169), 
-                 rep("red.voters", 169), 
-                 rep("blues", 169),
-                 rep("blue.activs", 169),
-                 rep("blue.voters", 169))
- 
+ reds3<-d3[,1:4]
+ blues3<-d3[,5:8]
+ red.activs3<-d3[,9:12]
+ red.voters3<-d3[,13:16]
+ blue.voters3<-d3[,17:20]
+ blue.activs3<-d3[,21:24]
+ d3<-rbind(reds3,red.activs3, red.voters3, blues3, blue.activs3, blue.voters3)
  d3<-as.data.frame(d3)
+ d3$type<-c(rep("reds", 169), 
+            rep("red.activs", 169), 
+            rep("red.voters", 169), 
+            rep("blues", 169),
+            rep("blue.activs", 169),
+            rep("blue.voters", 169))
+ colnames(d3)<-c("x", "y", "color", "pendown", "type")
+ head(d3)
  write.csv(d3, file=paste(dir_name, "/Plots/PositionPlot/D3.csv", sep=""))
  
+ ##Plots
+ #pdf(file=file.path(dir_name,"Plots","PositionPlot","Positions.pdf"),width=8.5,height=11)
+ dev.off()
+ plot(x=reds[,1], y=reds[,2], col="red", 
+      pch="*", ylab="Simulation Period", xlab="Cand Positions", 
+      main="Dim1", ylim=c(-6,6))
+ points(x=blues[,1], y=blues[,2], col="blue", pch="*")
+ points(x=red.activs[,1], y=red.activs[,2], col="red4", pch="*")
+ points(x=red.voters[,1], y=red.voters[,2], col="rosybrown1", pch="*")
+ points(x=blue.activs[,1], y=blue.activs[,2], col="slategray", pch="*")
+ points(x=blue.voters[,1], y=blue.voters[,2], col="blue4", pch="*")
+
+ plot(x=reds2[,1], y=reds2[,2], col="red", 
+      pch="*", ylab="Simulation Period", xlab="Cand Positions", 
+      main="Dim2", ylim=c(-15,15))
+ points(x=blues2[,1], y=blues2[,2], col="blue", pch="*")
+ points(x=red.activs2[,1], y=red.activs2[,2], col="red4", pch="*")
+ points(x=red.voters2[,1], y=red.voters2[,2], col="rosybrown1", pch="*")
+ points(x=blue.activs2[,1], y=blue.activs2[,2], col="slategray", pch="*")
+ points(x=blue.voters2[,1], y=blue.voters2[,2], col="blue4", pch="*")
  
+ plot(x=reds3[,1], y=reds3[,2], col="red", 
+      pch="*", ylab="Simulation Period", xlab="Cand Positions", 
+      main="Dim3", ylim=c(-4,3))
+ points(x=blues3[,1], y=blues3[,2], col="blue", pch="*")
+ points(x=red.activs3[,1], y=red.activs3[,2], col="red4", pch="*")
+ points(x=red.voters3[,1], y=red.voters3[,2], col="rosybrown1", pch="*")
+ points(x=blue.activs3[,1], y=blue.activs3[,2], col="slategray", pch="*")
+ points(x=blue.voters3[,1], y=blue.voters3[,2], col="blue4", pch="*")
 }
 read.nlogo()
 
