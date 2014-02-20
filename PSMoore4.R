@@ -77,8 +77,6 @@ read.nlogo<-function(file=Jacob.data){
   turt<-turt[,-35]
   ##Cbind turt with the split district preferences
   turt<-cbind(turt, distmat)
-  head(turt)
-  
   
   ##Divide into districts
   distr<-which(turt[,"breed"]=="districts") ##finding districts
@@ -94,7 +92,66 @@ read.nlogo<-function(file=Jacob.data){
   uniques<-apply(districts, 2, uniq)##Findings rows with all equal
   uniques<-which(uniques==TRUE) ##finding which specific columns
   districts<-districts[,-uniques] ##trimming down data. 
+  head(districts)
   ##NEED TO SAVE AS CSV!
+  
+  ##Parties
+  party<-which(turt[,"breed"]=="parties") ##finding parties
+  parties<-turt[party,] ##subsetting parties
+
+  mpos<-parties[,c("mean-position")]
+  mpos<-unlist(strsplit(mpos, " "))
+  mpos.mat<-matrix(mpos,ncol=3, byrow=TRUE)
+  colnames(mpos.mat)<-c("mean-pos-1","mean-pos-2", "mean-pos-3")  
+  parties<-cbind(parties, mpos.mat)
+  
+  enf<-parties[,"enforcement-point"]
+  enf<-unlist(strsplit(enf, " "))
+  enf.mat<-matrix(enf, ncol=3, byrow=TRUE)
+  colnames(enf.mat)<-c("enforcement-point-1",
+                       "enforcement-point-2",
+                       "enforcement-point-3")
+  parties<-cbind(parties,enf.mat)
+  
+  cand.part<-parties[,"my-cands-party"]
+  cand.part<-unlist(strsplit(cand.part, " "))
+  cand.part.mat<-matrix(cand.part, nrow=2, byrow=TRUE)
+  colnames(cand.part.mat)<-paste("my-cands-party", c(1:208))
+  parties<-(cbind(parties,cand.part.mat))
+  
+  uniques_p<-apply(parties, 2, uniq)##Findings rows with all equal
+  uniques_p<-which(uniques_p==TRUE) ##finding which specific columns
+  parties<-parties[,-uniques_p] ##trimming down data.
+  colnames(parties)
+  parties<-parties[,-c(7,9,10)]
+  head(parties)
+  parties<-as.data.frame(parties) ##making data.frame
+  ##MAKE CSV!!!
+  
+  splitter<-function(x){
+    unlist(strsplit(x, " "))
+  }
+  
+  ##Voters
+  voter<-which(turt[,"breed"]=="voters") 
+  voters<-turt[voter,]
+  voter.sal<-voters[,"this-voter-sal"]
+  voter.sal<-splitter(voter.sal)
+  sal.mat<-matrix(voter.sal, ncol=3, byrow=TRUE)
+  voters<-cbind(voters, sal.mat)
+  prefs<-voters[,"prefs"]
+  prefs<-splitter(prefs)
+  pref.mat<-matrix(prefs, ncol=3, byrow=TRUE)
+  voters<-cbind(voters, pref.mat)
+  
+  uniques_v<-apply(voters, 2, uniq)##Findings rows with all equal
+  uniques_v<-which(uniques_v==TRUE) ##finding which specific columns
+  voters<-voters[,-uniques_v]
+  voters<-voters[,-c(7,9)]
+  colnames(voters)[8:13]<-c(paste("this-voter-sal", 1:3, sep=""), 
+                            paste("prefs", 1:3,sep=""))
+  head(voters)
+ ##MAKE CSV!
 }
 read.nlogo()
 
