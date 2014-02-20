@@ -135,6 +135,7 @@ read.nlogo<-function(file=Jacob.data){
   ##Voters
   voter<-which(turt[,"breed"]=="voters") 
   voters<-turt[voter,]
+  
   voter.sal<-voters[,"this-voter-sal"]
   voter.sal<-splitter(voter.sal)
   sal.mat<-matrix(voter.sal, ncol=3, byrow=TRUE)
@@ -151,7 +152,28 @@ read.nlogo<-function(file=Jacob.data){
   colnames(voters)[8:13]<-c(paste("this-voter-sal", 1:3, sep=""), 
                             paste("prefs", 1:3,sep=""))
   head(voters)
+  voters<-as.data.frame(voters)
  ##MAKE CSV!
+ 
+ ##Activisits
+ activ<-which(turt[,"breed"]=="activists") 
+ activs<-turt[activ,]
+ a.sal<-activs[,"this-act-sal"]
+ a.sal<-splitter(a.sal)
+ a.mat<-matrix(a.sal, ncol=3, byrow=TRUE)
+ activs<-cbind(activs, a.mat)
+ prefs1<-activs[,"prefs"]
+ prefs1<-splitter(prefs1)
+ pref.mat1<-matrix(prefs1, ncol=3, byrow=TRUE)
+ activs<-cbind(activs, pref.mat1)
+ 
+ uniques_a<-apply(activs, 2, uniq)##Findings rows with all equal
+ uniques_a<-which(uniques_a==TRUE) ##finding which specific columns
+ activs<-activs[,-uniques_a]
+ activs<-activs[,-c(8,9)]
+ colnames(activs)[9:14]<-c(paste("this-act-sal", 1:3, sep=""), 
+                           paste("prefs", 1:3,sep=""))
+ activs<-as.data.frame(activs)
 }
 read.nlogo()
 
