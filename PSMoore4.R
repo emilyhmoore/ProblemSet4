@@ -27,7 +27,14 @@ read.nlogo<-function(file=Jacob.data){
   dir.create(paste(dir_name, "/", "Plots", "/", "WinnersPlot", sep=""))
   dir.create(paste(dir_name, "/", "Plots", "/", "PolarizationPlot", sep=""))
   dir.create(paste(dir_name, "/", "Plots", "/", "IncumbentPercentagePlot", sep=""))
-  return(dir_name)
+  
+  ###Globals
+  globals.names <- scan(file=file, what=" ",sep=",",skip=8,nlines=1)
+  globals<-scan(file=file, what=" ",sep=",",skip=9,nlines=1)
+  
+  ##Turtles
+  turtles.names<-scan(file=file, what=" ",sep=",",skip=12,nlines=1)
+  turtles<-scan(file=file, what=" ", sep=",", skip=13, n=4786)
 }
 read.nlogo()
 
@@ -64,8 +71,6 @@ mult(9) ##Try it out
 
 ##Previous stuff from class to incorporate later. 
 
-globals.names <- scan(file=Jacob.data,what=" ",sep=",",skip=8,nlines=1)
-globals.names
 
 globals.values <- scan(file=Jacob.data,what=c(0,""),quote="",sep=" ",skip=9,nlines=1)
 globals.values <- gsub("\\[|\\]","",globals.values)
