@@ -6,6 +6,15 @@ Jacob.data <- "NetLogo.csv"
 ##Gives the name of the file. 
 name<- scan(Jacob.data, skip=1, nlines=1, what=" ", sep=",", n=1)
 
+##Gives the date/time info
+datetime<-scan(Jacob.data, skip=2, nlines=1, what=" ", sep=",", n=1)
+##Remove the information on the end. 
+datetime<-gsub(" -0400", "", datetime)
+##Take out slashes and colons
+datetime<-gsub("/|:", ".", datetime)
+##Make the directory name include the name and date/time
+dir_name<-paste(name, datetime)
+
 
 ##Previous stuff from class to incorporate later. 
 
